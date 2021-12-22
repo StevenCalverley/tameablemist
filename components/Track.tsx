@@ -3,7 +3,7 @@ import type { Track } from '../lib/spotify/types';
 export default function Track(track: Track & { ranking: number }) {
   return (
     <div className="flex flex-row items-baseline  max-w-3xl w-full py-3">
-      <p className="text-sm font-medium text-gray-400 dark:text-gray-600">
+      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
         {track.ranking}
       </p>
       <div className="flex flex-col pl-3">
@@ -15,7 +15,7 @@ export default function Track(track: Track & { ranking: number }) {
         >
           {track.title}
         </a>
-        <p className="text-gray-500 truncate w-60 sm:w-96 md:w-full">
+        <p className="text-gray-600 truncate w-60 sm:w-96 md:w-full">
           {track.artist}
         </p>
       </div>
