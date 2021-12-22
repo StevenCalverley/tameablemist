@@ -9,8 +9,10 @@ type Track = {
   title: string;
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse<Track[]>) => {
+const Tracks = async (req: NextApiRequest, res: NextApiResponse<Track[]>) => {
   const tracks = await getTopTracks();
 
   return res.status(200).json(tracks);
 };
+
+export default Tracks;
