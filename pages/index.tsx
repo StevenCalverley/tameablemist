@@ -14,15 +14,13 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      fallback: {
-        '/api/tracks': res
-      }
+      tracks: res
     }, // will be passed to the page component as props
-    revalidate: 60
+    revalidate: 86400 // 1 Day
   };
 };
 
-const Home: NextPage<{ fallback: Track[] }> = ({ fallback }) => {
+const Home: NextPage<{ tracks: Track[] }> = ({ tracks }) => {
   return (
     <div>
       <Head>
@@ -32,9 +30,7 @@ const Home: NextPage<{ fallback: Track[] }> = ({ fallback }) => {
       </Head>
 
       <main className="container mx-auto max-w-3xl py-8">
-        <SWRConfig value={{ fallback }}>
-          <Tracks />
-        </SWRConfig>
+        <Tracks tracks={tracks} />
         <footer className="mt-8 py-4 border-t">
           <NowPlaying />
         </footer>

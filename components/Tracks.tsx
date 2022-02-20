@@ -1,13 +1,8 @@
-import useSWR from 'swr';
-
 import type { Track as TTrack } from '../lib/spotify/types';
-import fetcher from '../utils/fetcher';
 
 import Track from './Track';
 
-const Tracks = () => {
-  const { data } = useSWR<TTrack[]>('/api/tracks', fetcher);
-
+const Tracks = ({ tracks }: { tracks: TTrack[] }) => {
   return (
     <div className="">
       <h3 className="font-bold text-3xl tracking-tight text-gray-800 dark:text-gray-100">
@@ -19,8 +14,8 @@ const Tracks = () => {
       </p>
 
       <div className="mt-1 divide-y">
-        {data &&
-          data.map((track, idx) => (
+        {tracks &&
+          tracks.map((track, idx) => (
             <Track key={idx} ranking={idx + 1} {...track} />
           ))}
       </div>
