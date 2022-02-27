@@ -8,6 +8,8 @@ export async function getStaticPaths() {
   const URL = process.env.VERCEL_URL
     ? process.env.VERCEL_URL
     : 'http://localhost:3000';
+
+  console.log(URL);
   const res = await fetch(`${URL}/api/posts`);
   const posts: Post[] = await res.json();
   const paths = posts.map((post) => {
