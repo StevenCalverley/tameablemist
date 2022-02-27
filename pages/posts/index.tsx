@@ -8,7 +8,13 @@ export const getStaticProps: GetStaticProps = async () => {
   const URL = process.env.VERCEL_URL
     ? process.env.VERCEL_URL
     : 'http://localhost:3000';
-  const res = await fetch(`${URL}/api/posts`);
+  const res = await fetch(`${URL}/api/posts`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'User-Agent': '*'
+    }
+  });
   if (!res.ok) {
     return {
       notFound: true

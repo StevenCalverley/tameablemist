@@ -9,14 +9,14 @@ export async function getStaticPaths() {
     ? `https://${process.env.VERCEL_URL}`
     : 'http://localhost:3000';
 
-  console.log(URL);
   const res = await fetch(`${URL}/api/posts`, {
     headers: {
+      'Content-Type': 'application/json',
       Accept: 'application/json',
       'User-Agent': '*'
     }
   });
-  console.log(res);
+
   const posts: Post[] = await res.json();
   const paths = posts.map((post) => {
     return {
@@ -42,6 +42,7 @@ export const getStaticProps: GetStaticProps = async (
     const { id } = context.params;
     const res = await fetch(`${URL}/api/posts/${id}`, {
       headers: {
+        'Content-Type': 'application/json',
         Accept: 'application/json',
         'User-Agent': '*'
       }
