@@ -1,6 +1,4 @@
-import type { NextPage } from 'next';
-import { GetStaticProps } from 'next';
-import { SWRConfig } from 'swr';
+import type { NextPage, GetStaticProps } from 'next';
 import Head from 'next/head';
 
 import { getTopTracks } from '../lib/spotify';

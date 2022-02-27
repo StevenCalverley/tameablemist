@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '../../lib/prisma';
+import { prisma } from '../../../lib/prisma';
 
 export default async function postController(
   req: NextApiRequest,
@@ -19,7 +19,11 @@ export default async function postController(
       break;
     case 'POST':
       try {
-        const { title, content, excerpt } = req.body;
+        let parsedBody = req.body;
+        if (typeof req.body === 'string') {
+          parsedBody = JSON.parse(req.body);
+        }
+        const { title, content, excerpt } = parsedBody;
 
         const newPost = await prisma.post.create({
           data: {

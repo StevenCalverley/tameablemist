@@ -6,7 +6,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:push": "dotenv -e .env.local -- npx prisma db push"
+    "db:serve": "dotenv -e .env.local -- npx prisma studio",
+    "db:push": "dotenv -e .env.local -- npx prisma db push",
+    "db:connect": "dotenv -e .env.local -- pscale connect tameablemist development --port 3309"
   },
   "dependencies": {
     "@prisma/client": "^3.9.2",
@@ -16,6 +18,7 @@
     "swr": "^1.1.1"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.4.0",
     "@types/node": "16.11.12",
     "@types/react": "17.0.37",
     "autoprefixer": "^10.4.0",
