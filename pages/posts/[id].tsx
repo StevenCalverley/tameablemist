@@ -4,10 +4,10 @@ import Link from 'next/link';
 import type { Post } from '@prisma/client';
 import { useEffect, useState } from 'react';
 
-const URL = process.env.VERCEL_URL
-  ? process.env.VERCEL_URL
-  : 'http://localhost:3000';
 export async function getStaticPaths() {
+  const URL = process.env.VERCEL_URL
+    ? process.env.VERCEL_URL
+    : 'http://localhost:3000';
   const res = await fetch(`${URL}/api/posts`);
   const posts: Post[] = await res.json();
   const paths = posts.map((post) => {
@@ -27,6 +27,9 @@ export async function getStaticPaths() {
 export const getStaticProps: GetStaticProps = async (
   context: GetStaticPropsContext<{ id?: string }>
 ) => {
+  const URL = process.env.VERCEL_URL
+    ? process.env.VERCEL_URL
+    : 'http://localhost:3000';
   if (context?.params?.id) {
     const { id } = context.params;
     const res = await fetch(`${URL}/api/posts/${id}`);
