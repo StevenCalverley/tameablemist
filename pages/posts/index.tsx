@@ -5,7 +5,10 @@ import Link from 'next/link';
 import type { Post } from '@prisma/client';
 
 export const getStaticProps: GetStaticProps = async () => {
-  const res = await fetch(`http://localhost:3000/api/posts`);
+  const URL = process.env.VERCEL_URL
+    ? process.env.VERCEL_URL
+    : 'http://localhost:3000';
+  const res = await fetch(`${URL}/api/posts`);
   if (!res.ok) {
     return {
       notFound: true
