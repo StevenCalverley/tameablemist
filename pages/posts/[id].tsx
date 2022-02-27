@@ -41,7 +41,8 @@ export const getStaticProps: GetStaticProps = async (
             createdAt: new Date(post.createdAt).toLocaleDateString(),
             updatedAt: new Date(post.updatedAt).toLocaleDateString()
           }
-        }
+        },
+        revalidate: 60
       };
     }
 
