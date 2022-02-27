@@ -15,7 +15,8 @@ export const getStaticProps: GetStaticProps = async () => {
         title: post.title,
         excerpt: post.excerpt
       }))
-    }
+    },
+    revalidate: 60
   };
 };
 
