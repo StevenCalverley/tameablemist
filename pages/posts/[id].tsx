@@ -1,8 +1,8 @@
+import { useEffect, useState } from 'react';
 import type { GetStaticProps, GetStaticPropsContext, NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import type { Post } from '@prisma/client';
-import { useEffect, useState } from 'react';
 
 export async function getStaticPaths() {
   const URL = process.env.VERCEL_URL
@@ -10,7 +10,12 @@ export async function getStaticPaths() {
     : 'http://localhost:3000';
 
   console.log(URL);
-  const res = await fetch(`${URL}/api/posts`);
+  const res = await fetch(`${URL}/api/posts`, {
+    headers: {
+      Accept: 'application/json',
+      'User-Agent': '*'
+    }
+  });
   console.log(res);
   const posts: Post[] = await res.json();
   const paths = posts.map((post) => {
@@ -35,7 +40,12 @@ export const getStaticProps: GetStaticProps = async (
     : 'http://localhost:3000';
   if (context?.params?.id) {
     const { id } = context.params;
-    const res = await fetch(`${URL}/api/posts/${id}`);
+    const res = await fetch(`${URL}/api/posts/${id}`, {
+      headers: {
+        Accept: 'application/json',
+        'User-Agent': '*'
+      }
+    });
     if (!res.ok) {
       return {
         notFound: true
