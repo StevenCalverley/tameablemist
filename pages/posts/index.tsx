@@ -1,31 +1,20 @@
 import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
+import { prisma } from '../../lib/prisma';
 
 import type { Post } from '@prisma/client';
 
 export const getStaticProps: GetStaticProps = async () => {
-  const URL = process.env.VERCEL_URL
-    ? process.env.VERCEL_URL
-    : 'http://localhost:3000';
-  const res = await fetch(`${URL}/api/posts`, {
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'User-Agent': '*'
-    }
-  });
-  if (!res.ok) {
-    return {
-      notFound: true
-    };
-  }
-
-  const posts = await res.json();
+  const posts = await prisma.post.findMany();
 
   return {
     props: {
-      posts
+      posts: posts.map((post) => ({
+        id: post.id,
+        title: post.title,
+        excerpt: post.excerpt
+      }))
     }
   };
 };

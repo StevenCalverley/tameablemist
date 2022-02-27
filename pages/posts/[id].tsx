@@ -3,21 +3,10 @@ import type { GetStaticProps, GetStaticPropsContext, NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import type { Post } from '@prisma/client';
+import { prisma } from '../../lib/prisma';
 
 export async function getStaticPaths() {
-  const URL = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:3000';
-
-  const res = await fetch(`${URL}/api/posts`, {
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'User-Agent': '*'
-    }
-  });
-
-  const posts: Post[] = await res.json();
+  const posts = await prisma.post.findMany();
   const paths = posts.map((post) => {
     return {
       params: {
@@ -35,30 +24,29 @@ export async function getStaticPaths() {
 export const getStaticProps: GetStaticProps = async (
   context: GetStaticPropsContext<{ id?: string }>
 ) => {
-  const URL = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:3000';
   if (context?.params?.id) {
     const { id } = context.params;
-    const res = await fetch(`${URL}/api/posts/${id}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'User-Agent': '*'
+
+    const post = await prisma.post.findUnique({
+      where: {
+        id: parseInt(id)
       }
     });
-    if (!res.ok) {
+
+    if (post) {
       return {
-        notFound: true
+        props: {
+          post: {
+            ...post,
+            createdAt: new Date(post.createdAt).toLocaleDateString(),
+            updatedAt: new Date(post.updatedAt).toLocaleDateString()
+          }
+        }
       };
     }
 
-    const post = await res.json();
-
     return {
-      props: {
-        post
-      }
+      notFound: true
     };
   }
 
@@ -71,7 +59,6 @@ const SinglePost: NextPage<{ post: Post }> = ({ post }) => {
   const { id, title, excerpt, createdAt, content } = post;
   const [views, setViews] = useState(post.views);
   const [likes, setLikes] = useState(post.likes);
-  const formattedDate = new Date(createdAt).toLocaleDateString();
 
   useEffect(() => {
     fetch(`/api/posts/${id}/views`, { method: 'POST' })
@@ -95,7 +82,7 @@ const SinglePost: NextPage<{ post: Post }> = ({ post }) => {
       <main className="container mx-auto max-w-3xl py-8">
         <h1 className="font-bold text-3xl">{title}</h1>
         <p className="text-gray-400 text-sm">
-          {formattedDate}{' '}
+          {createdAt}{' '}
           <span className="px-1.5 py-1 bg-gray-100 text-gray-700 rounded-full font-medium">
             {views}
           </span>
