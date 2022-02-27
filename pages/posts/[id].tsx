@@ -11,6 +11,7 @@ export async function getStaticPaths() {
 
   console.log(URL);
   const res = await fetch(`${URL}/api/posts`);
+  console.log(res);
   const posts: Post[] = await res.json();
   const paths = posts.map((post) => {
     return {
@@ -30,7 +31,7 @@ export const getStaticProps: GetStaticProps = async (
   context: GetStaticPropsContext<{ id?: string }>
 ) => {
   const URL = process.env.VERCEL_URL
-    ? process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
     : 'http://localhost:3000';
   if (context?.params?.id) {
     const { id } = context.params;
