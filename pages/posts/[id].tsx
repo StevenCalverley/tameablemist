@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 export async function getStaticPaths() {
   const URL = process.env.VERCEL_URL
-    ? process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
     : 'http://localhost:3000';
 
   console.log(URL);
